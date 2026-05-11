@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/proyecto.css">
+</head>
+<body>
+    
+<header>
+    <a href="portada.html">
+        <p>The Ipomoea Proyect</p>
+    </a>
+
+    <div class="hamburger" id="hamburger">
+        ☰
+    </div>
+
+    <div class="nav-links" id="navLinks">
+        <a href="">Base de datos</a>
+        <a href="">El género</a>
+        <a href="proyecto.html">El proyecto</a>
+    </div>
+</header>
+
+    <h1 class="orden">EL proyecto</h1>
+
+    <div class="guinea" id="guinea">       
+        <img src="img/floresRojas.png" alt="mapa de guinea">
+        <p>El Proyecto Ipomoea es una iniciativa de investigación colaborativa centrada en la taxonomía y la evolución de Ipomoea , el género más grande de la familia Convolvulaceae. El proyecto integra filogenética molecular, estudios de herbario y de campo, y datos históricos para esclarecer las relaciones entre especies, identificar nuevos taxones e investigar diversos patrones evolutivos, como la dispersión a larga distancia o el desarrollo de raíces de almacenamiento.
+
+Un aspecto clave de nuestra investigación es comprender la historia evolutiva de Ipomoea batatas (L.) Lam. , la batata, y sus parientes silvestres, lo que permite esclarecer su domesticación y su expansión global.
+
+Mediante una investigación exhaustiva y la colaboración internacional, nuestro objetivo es mejorar la precisión taxonómica y los esfuerzos de conservación de este grupo de plantas, de gran importancia ecológica y económica.
+
+Este sitio web se diseñó principalmente como una plataforma para poner a disposición las bases de datos que sustentan el proyecto, tanto taxonómicas como corológicas, así como filogenias moleculares y herramientas para ayudar a identificar especies de Ipomoea en todo el mundo. Lo que ve ahora es el sitio web del Proyecto Ipomoea 2.0 , una versión renovada con un aspecto más moderno y una mejor integración con las bases de datos globales de biodiversidad. Se actualiza continuamente y, por lo tanto, debe considerarse un trabajo en progreso.</p>
+    </div>
+
+<div class="equipo" id="equipo">
+    <h1>El equipo</h1>
+    <p>Nuestro trabajo sobre Ipomoea comenzó en Oxford hace más de una década. Desde entonces, muchos investigadores de todo el mundo han colaborado en el proyecto.</p>
+
+    <div class="contactos">
+
+        <div class="miembro">
+            <img src="img/robert.png" alt="">
+            <div class="info">
+                <h3>Robert W. Scotland</h3>
+                <p>University of Oxford, United Kingdom</p>
+            </div>
+        </div>
+
+        <div class="miembro">
+            <img src="img/john.png" alt="">
+            <div class="info">
+                <h3>John R.I. Wood</h3>
+                <p>University of Oxford & Royal Botanic Gardens, Kew, United Kingdom</p>
+            </div>
+        </div>
+
+        <div class="miembro">
+            <img src="img/pablo.png" alt="">
+            <div class="info">
+                <h3>Pablo Muñoz-Rodríguez</h3>
+                <p>Universidad Complutense de Madrid, Spain</p>
+            </div>
+        </div>
+
+        <div class="miembro">
+            <img src="img/tom.png" alt="">
+            <div class="info">
+                <h3>Tom Carruthers</h3>
+                <p>University of Michigan, USA</p>
+            </div>
+        </div>
+
+        <div class="miembro">
+            <img src="img/alex.png" alt="">
+            <div class="info">
+                <h3>Alex Sumadijaya</h3>
+                <p>Badan Riset dan Inovasi Nasional RI, Indonesia</p>
+            </div>
+        </div>
+
+        <div class="miembro">
+            <img src="img/tomWells.png" alt="">
+            <div class="info">
+                <h3>Tom Wells</h3>
+                <p>Royal Botanic Gardens, Kew, United Kingdom</p>
+            </div>
+        </div>
+
+        <div class="miembro">
+            <img src="img/zoe.png" alt="">
+            <div class="info">
+                <h3>Zoë A. Goodwin</h3>
+                <p>Royal Botanic Garden Edinburgh, UK</p>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<footer>
+    <a href="https://www.csic.es/es">
+        <img src="img/CSIC.png" alt="CSIC" class="logo2">
+    </a>
+        <p>Copyrigh © Flora de Guinea Ecuatorial 2026</p>
+    <a href="https://www.ucm.es/">
+        <img src="img/complutense.png" alt="Complutense" class="logo2">
+    </a>
+</footer>
+
+
+<!-- JS para header que cambia tamaño -->
+<script>
+    window.addEventListener("scroll", function() {
+        const header = document.querySelector("header");
+
+        // Evita vibrar usando >= y <= y solo cuando cambia
+        if (window.scrollY > 50 && !header.classList.contains("scrolled")) {
+            header.classList.add("scrolled");
+        } else if (window.scrollY <= 50 && header.classList.contains("scrolled")) {
+            header.classList.remove("scrolled");
+        }
+    });
+</script>
+
+<!-- JS para que las imágenes de contacto tengan efecto-->
+<script>
+    const miembros = document.querySelectorAll('.miembro');
+
+    miembros.forEach(miembro => {
+    miembro.addEventListener('click', (e) => {
+            e.stopPropagation();
+
+            const info = miembro.querySelector('.info');
+            const isVisible = info.classList.contains('visible');
+
+            // Primero ocultamos todas las demás
+            miembros.forEach(m => m.querySelector('.info').classList.remove('visible'));
+
+            // Si no estaba visible, la mostramos
+            if (!isVisible) {
+                info.classList.add('visible');
+            }
+        });
+    });
+
+    // Cerrar al hacer clic fuera
+    document.addEventListener('click', () => {
+        miembros.forEach(m => m.querySelector('.info').classList.remove('visible'));
+    });
+
+    // EXTRA: Cerrar info al empezar a deslizar en móvil (opcional pero recomendado)
+    document.querySelector('.contactos').addEventListener('scroll', () => {
+        miembros.forEach(m => m.querySelector('.info').classList.remove('visible'));
+    }, { passive: true });
+</script>
+</body>
+</html>

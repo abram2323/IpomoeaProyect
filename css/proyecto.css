@@ -1,0 +1,241 @@
+/* RESET BÁSICO */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    /*outline: 3px solid black;*/
+}
+
+html {
+  margin: 0;
+}
+
+body {
+    margin: 0;
+    overflow-x: hidden;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* HEADER */
+header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 50px;
+    background: linear-gradient(to bottom, rgba(50, 79, 135), rgba(192, 208, 240));
+    box-sizing: border-box; /* Evita que el padding rompa el ancho */
+    transition: all 0.3s ease;
+}
+
+/* HEADER SCROLLED */
+header.scrolled {
+    padding: 10px 30px; /* Reducimos padding lateral en scroll */
+}
+
+/* LOGO */
+header a{
+    font-size: 50px;
+    text-decoration: none;
+}
+
+header p{
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    color: white;
+}
+
+header.scrolled .logo {
+    height: 60px;
+}
+
+/* NAV */
+.nav-links {
+    display: flex;
+    gap: 30px;
+    
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: white;
+    font-size: 18px;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.nav-links a:hover {
+    color: #004d33;
+}
+
+/* Icono hamburguesa */
+.hamburger {
+    display: none;
+    font-size: 30px;
+    color: white;
+    cursor: pointer;
+}
+/*---------------------------*/
+
+/*Orden*/
+.orden {
+    /* clamp(mínimo, preferido, máximo) */
+    font-size: clamp(1.8rem, 8vw, 3.2rem); 
+    text-align: center;
+    margin: 40px auto;
+    color: rgba(39, 39, 42);
+    width: 90%; /* Deja un margen de seguridad a los lados */
+    max-width: 1200px;
+    line-height: 1.2; /* Ajusta el espacio entre líneas si el texto salta */
+}
+/*------------------------------*/
+
+/* BLOQUE GUINEA */
+.guinea {
+    max-width: 1200px;
+    margin: 50px auto;
+    padding: 0 5% 50px 5%; /* Usamos % para que respire en los bordes */
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px; /* Un poco más de espacio entre mapa y texto */
+    align-items: center; /* Centramos verticalmente mapa y texto en PC */
+    color: rgba(39, 39, 42);
+    border-bottom: 2px solid #ccc;
+}
+
+.guinea img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px; /* Un pelín más de curva para seguir tu estilo */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3); /* Sombra para que el mapa resalte */
+}
+
+.guinea p {
+    font-size: 1.1rem;
+    line-height: 1.8; /* 2 es mucho para móvil, 1.8 es más equilibrado */
+    text-align: justify;
+    margin: 0;
+}
+/*-----------------------------------*/
+
+/*CONTACTOS*/
+/* Título del equipo */
+.equipo {
+    max-width: 1200px;
+    margin: 60px auto;
+    padding-bottom: 40px;
+    /* Línea inferior centrada (Espacio - Línea - Espacio) */
+    border-bottom: 2px solid #ccc; 
+    width: 90%; 
+}
+
+.equipo h1 {
+    text-align: center;
+    font-size: 50px;
+    color: rgba(39, 39, 42);
+    margin-bottom: 40px;
+}
+
+.equipo p{
+    text-align: center;
+    font-size: 20px;
+    color: rgba(39, 39, 42);
+    margin-bottom: 20px;
+}
+/* Grid de contactos */
+.contactos {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 columnas en PC */
+    gap: 30px;
+    padding: 20px 0;
+}
+
+/* Cada miembro */
+.miembro {
+    position: relative;
+    width: 100%;
+    transition: transform 0.4s ease;
+    cursor: pointer;
+}
+
+.miembro:hover{   
+    transform: scale(1.05);      /* agranda 20% al pasar el ratón */
+}
+
+/* Imagen del miembro */
+.miembro img {
+    width: 100%;
+    height: 350px;
+    object-fit: cover;
+    border-radius: 10px;
+    display: block;
+}
+
+/* Información oculta para animaciones futuras */
+.miembro .info {
+    display: none; /* Se activa con la clase .visible desde JS */
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 20px;
+    box-sizing: border-box;
+    border-radius: 10px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.miembro .info.visible {
+    display: flex;
+    opacity: 1;
+}
+/* Opcional: texto dentro de la info */
+.miembro .info h3 {
+    margin-top: 0;
+    font-size: 1.5rem;
+}
+
+.miembro .info p {
+    font-size: 1rem;
+    margin: 5px 0;
+}
+/*--------------------------------------*/
+
+/* FOOTER */
+footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 50px;
+    background: linear-gradient(to bottom, rgba(192, 208, 240), rgba(50, 79, 135));
+    width: 100%;
+    color: white;
+    box-sizing: border-box; /* Fundamental para evitar el desborde lateral */
+}
+
+.logo2 {
+    width: 120px; /* Un poco más grande para que se aprecie el detalle */
+    height: auto;
+    transition: transform 0.3s ease;
+}
+
+.logo2:hover {
+    transform: scale(1.1);
+}
+
+footer p {
+    font-size: 0.9rem;
+    text-align: center;
+    margin: 0 15px;
+}
+/*---------------------------------------------*/

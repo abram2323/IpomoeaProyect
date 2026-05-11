@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/portada.css">
+</head>
+<body>
+    
+<header>
+    <a href="portada.html">
+        <p>The Ipomoea Proyect</p>
+    </a>
+
+    <div class="hamburger" id="hamburger">
+        ☰
+    </div>
+
+    <div class="nav-links" id="navLinks">
+        <a href="">Base de datos</a>
+        <a href="">El género</a>
+        <a href="proyecto.html">El proyecto</a>
+    </div>
+</header>
+
+
+<section class="hero">
+    <img src="img/ipomoea.png" alt="Imagen principal">
+
+    <h1>Explorando la diversidad de Ipomoea</h1>
+
+    <div class="hero-textos">
+        <p></p>
+        <p></p>
+        <p></p>
+    </div>
+
+    <div class="hero-buttons">
+        <button class="btn-somos" id="btnSomos">¿Quiénes somos?</button>
+        <button class="btn-proyecto" id="btnContacto">Contáctanos</button>
+    </div>
+</section>
+
+<div class="diseñoFormulario">
+    <div class="contenedor-imagen">
+        <img src="img/floraBajoMicrooscopio.jpg" alt="Microoscopio">
+        <div class="capa-texto">
+            <h1>Contáctanos</h1>
+            <p>Centro de estudios de la Universidad Complutense de Madrid</p>
+        </div>
+    </div>
+</div>
+
+<div class="contenedor" id="formulario">
+    <form class="formulario" action="guardar.php" method="POST">
+
+        <div class="encabezado">
+            <img src="img/usuario.png" class="icono">
+            <label class="titulo">Información personal</label>
+        </div>
+
+        <div class="campo">
+            <label>Nombre *</label>
+            <input name="nombre" placeholder="Ej: Juan" required>
+        </div>
+
+        <div class="campo">
+            <label>Apellido *</label>
+            <input name="apellido" placeholder="Ej: Guzmán" required>
+        </div>
+    
+        <div class="encabezado">
+            <img src="img/sobre.png" class="icono">
+            <label class="titulo">Contacto</label>
+        </div>
+
+        <div class="campo">
+            <label>Correo electrónico *</label>
+            <input type="email" name="email" placeholder="Ej: investigador@gmail.com" required>
+        </div>
+
+        <div class="campo">
+            <label>Teléfono</label>
+            <input name="telefono" placeholder="Ej: +34 654 123 789">
+        </div>
+
+        <button type="submit">Enviar</button>
+    </form>
+</div>
+
+<footer>
+    <a href="https://www.csic.es/es">
+        <img src="img/CSIC.png" alt="CSIC" class="logo2">
+    </a>
+        <p>Copyrigh © Flora de Guinea Ecuatorial 2026</p>
+    <a href="https://www.ucm.es/">
+        <img src="img/complutense.png" alt="Complutense" class="logo2">
+    </a>
+</footer>
+
+
+<!-- JS para header que cambia tamaño -->
+<script>
+    window.addEventListener("scroll", function() {
+        const header = document.querySelector("header");
+
+        // Evita vibrar usando >= y <= y solo cuando cambia
+        if (window.scrollY > 50 && !header.classList.contains("scrolled")) {
+            header.classList.add("scrolled");
+        } else if (window.scrollY <= 50 && header.classList.contains("scrolled")) {
+            header.classList.remove("scrolled");
+        }
+    });
+</script>
+
+<!--JS para que la imagen tenga efecto de movimiento-->
+<script>
+    window.addEventListener('scroll', () => {
+    const imagen = document.querySelector('.hero img');
+    let scrollPos = window.pageYOffset;
+    
+    // Mueve la imagen ligeramente hacia arriba al bajar
+    // El 0.5 controla la velocidad del efecto
+    imagen.style.transform = `translateY(${scrollPos * 0.5}px)`;
+});
+</script>
+</body>
+</html>
