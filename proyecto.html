@@ -158,5 +158,28 @@ Este sitio web se diseñó principalmente como una plataforma para poner a dispo
         miembros.forEach(m => m.querySelector('.info').classList.remove('visible'));
     }, { passive: true });
 </script>
+
+<!--Icono hamburguesa-->
+<script>
+        hamburger.addEventListener('click', () => {
+        navLinks.classList.toggle('active');
+        
+        // Cambia el icono
+        const isOpen = navLinks.classList.contains('active');
+        hamburger.innerHTML = isOpen ? '✕' : '☰';
+
+        // BLOQUEAR SCROLL: Evita que la web se mueva por detrás
+        document.body.style.overflow = isOpen ? 'hidden' : 'auto';
+    });
+
+    // No olvides resetear el scroll si hacen clic en un enlace
+    document.querySelectorAll('.nav-links a').forEach(link => {
+        link.addEventListener('click', () => {
+            navLinks.classList.remove('active');
+            hamburger.innerHTML = '☰';
+            document.body.style.overflow = 'auto'; // Habilitar scroll de nuevo
+        });
+    });
+</script>
 </body>
 </html>

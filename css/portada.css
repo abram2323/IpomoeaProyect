@@ -120,6 +120,12 @@ header.scrolled .logo {
     font-size: 3rem;
     margin-bottom: 20px;
     z-index: 1;
+    color: white;
+    text-shadow: 
+        -1px -1px 0 #000,  
+         1px -1px 0 #000,
+        -1px  1px 0 #000,
+         1px  1px 0 #000;
 }
 
 .hero-textos {
@@ -296,7 +302,7 @@ footer {
     justify-content: space-between;
     align-items: center;
     padding: 20px 50px;
-    background: linear-gradient(to bottom, rgba(192, 208, 240), rgba(50, 79, 135));
+    background: linear-gradient(to bottom,rgba(232, 252, 252),rgba(192, 208, 240), rgba(50, 79, 135));
     width: 100%;
     color: white;
     box-sizing: border-box; /* Fundamental para evitar el desborde lateral */
@@ -318,3 +324,128 @@ footer p {
     margin: 0 15px;
 }
 /*---------------------------------------------*/
+
+
+/* RESPONSIVE */
+/*Header*/
+@media (max-width: 768px) {
+    header {
+        padding: 15px 20px;
+    }
+
+    header a {
+        font-size: 22px;
+    }
+
+    .hamburger {
+        display: block;
+        z-index: 2000; /* Aseguramos que el botón esté por encima de todo */
+        position: relative;
+    }
+
+    .nav-links {
+        position: fixed;
+        top: 0;
+        right: -100%; /* Totalmente fuera de la pantalla */
+        width: 100%;  /* OCUPA TODA LA PANTALLA */
+        height: 100vh;
+        background: linear-gradient(to bottom,rgba(50, 79, 135), rgba(192, 208, 240));
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        transition: right 0.5s ease-in-out; /* Animación un pelín más lenta para que luzca */
+        z-index: 1500;
+        backdrop-filter: blur(10px);
+    }
+
+    .nav-links.active {
+        right: 0; /* Entra hasta cubrirlo todo */
+    }
+
+    .nav-links a {
+        font-size: 28px; /* Enlaces más grandes para llenar el espacio */
+        margin: 25px 0;
+        width: 100%;    /* Para que el área de clic sea mayor */
+        text-align: center;
+    }
+}
+/*----------------------------------*/
+
+/*Section*/
+@media (max-width: 768px) {
+    .hero h1 {
+        font-size: 2rem; /* Título más pequeño */
+    }
+
+    .hero-buttons {
+        flex-direction: column; /* Botones uno encima de otro para que sea fácil pulsar con el pulgar */
+        width: 100%;
+        max-width: 300px; /* Para que no ocupen todo el ancho de la pantalla */
+    }
+
+    .hero-buttons .btn-somos, 
+    .hero-buttons .btn-proyecto {
+        width: 100%; /* Botones de ancho completo dentro de su contenedor */
+    }
+}
+/*-------------------------------*/
+
+/*Diseño Formulario*/
+@media (max-width: 768px) {
+    .contenedor-imagen {
+        width: 90%; /* En móvil le damos casi todo el ancho con espacio a los lados */
+    }
+
+    .diseñoFormulario img {
+        height: 200px; /* Altura fija para que no sea muy alta en vertical */
+    }
+
+    .capa-texto h1 {
+        font-size: 1.5rem; /* Bajamos el tamaño del título */
+    }
+
+    .capa-texto p {
+        font-size: 1rem;
+        padding: 0 10px; /* Evitamos que el texto toque los bordes internos */
+    }
+}
+/*-----------------------------------------*/
+
+/*Formulario*/
+@media (max-width: 600px) {
+    .formulario {
+        /* Pasamos a una sola columna */
+        grid-template-columns: 1fr; 
+        padding: 20px;
+        width: 90%; /* Dejamos espacio a los lados */
+    }
+
+    .encabezado, .titulo, .formulario button {
+        /* En una sola columna, el span 2 ya no es necesario, pero span 1 asegura el orden */
+        grid-column: span 1; 
+    }
+
+    .formulario h1 {
+        font-size: 24px;
+    }
+}
+/*-----------------------------------------*/
+
+/*Footer*/
+@media (max-width: 768px) {
+    footer {
+        flex-direction: column; /* Apilamos los elementos */
+        gap: 20px;              /* Espacio vertical entre logos y texto */
+        padding: 30px 20px;      /* Más espacio arriba/abajo, menos a los lados */
+        text-align: center;
+    }
+
+    footer p {
+        margin: 10px 0;
+    }
+    
+    .logo2 {
+        width: 100px; /* En móvil podemos darles más protagonismo */
+    }
+}

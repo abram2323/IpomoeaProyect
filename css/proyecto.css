@@ -208,6 +208,7 @@ header.scrolled .logo {
 .miembro .info p {
     font-size: 1rem;
     margin: 5px 0;
+    color: white;
 }
 /*--------------------------------------*/
 
@@ -239,3 +240,132 @@ footer p {
     margin: 0 15px;
 }
 /*---------------------------------------------*/
+
+
+/* RESPONSIVE */
+/*Header*/
+@media (max-width: 768px) {
+    header {
+        padding: 15px 20px;
+    }
+
+    header a {
+        font-size: 22px;
+    }
+
+    .hamburger {
+        display: block;
+        z-index: 2000; /* Aseguramos que el botón esté por encima de todo */
+        position: relative;
+    }
+
+    .nav-links {
+        position: fixed;
+        top: 0;
+        right: -100%; /* Totalmente fuera de la pantalla */
+        width: 100%;  /* OCUPA TODA LA PANTALLA */
+        height: 100vh;
+        background: linear-gradient(to bottom,rgba(50, 79, 135), rgba(192, 208, 240));
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        transition: right 0.5s ease-in-out; /* Animación un pelín más lenta para que luzca */
+        z-index: 1500;
+        backdrop-filter: blur(10px);
+    }
+
+    .nav-links.active {
+        right: 0; /* Entra hasta cubrirlo todo */
+    }
+
+    .nav-links a {
+        font-size: 28px; /* Enlaces más grandes para llenar el espacio */
+        margin: 25px 0;
+        width: 100%;    /* Para que el área de clic sea mayor */
+        text-align: center;
+    }
+}
+/*----------------------------------*/
+
+/*Guinea*/
+@media (max-width: 768px) {
+    .guinea {
+        grid-template-columns: 1fr; /* Una sola columna: Mapa arriba, texto abajo */
+        text-align: center;         /* Centramos el contenido visualmente */
+        gap: 25px;
+        width: 90%;                 /* Mantenemos el "Espacio - Línea - Espacio" que querías */
+        margin: 30px auto;
+    }
+
+    .guinea img {
+        max-width: 450px;           /* Evitamos que el mapa sea gigantesco en tablets */
+        margin: 0 auto;             /* Centramos la imagen */
+    }
+
+    .guinea p {
+        text-align: left;           /* En móvil es más fácil de leer alineado a la izquierda */
+        font-size: 1rem;
+    }
+}
+/*------------------------------*/
+
+/*Contactos*/
+@media (max-width: 768px) {
+    .equipo h1 {
+        font-size: 35px;
+    }
+
+    .equipo p {
+        font-size: 19px;
+    }
+
+    .contactos {
+        display: flex;             /* De grid a fila horizontal */
+        overflow-x: auto;          /* Permite el scroll lateral */
+        scroll-snap-type: x mandatory; /* Ajuste magnético al centro */
+        gap: 15px;
+        padding: 20px 0;
+        /* Ocultar barra de scroll para estética */
+        scrollbar-width: none; 
+    }
+    
+    .contactos::-webkit-scrollbar { 
+        display: none; 
+    }
+
+    .miembro {
+        flex: 0 0 85%;             /* Cada foto ocupa el 85% del ancho */
+        scroll-snap-align: center; /* Se imanta al centro de la pantalla */
+        transform: none !important; /* Quitamos el scale en móvil para evitar saltos */
+    }
+
+    .miembro img {
+        height: 400px;             /* Un poco más alta para móviles */
+    }
+
+    /* Línea inferior más corta en móvil */
+    .equipo {
+        width: 80%; 
+        border-bottom: 2px solid #ccc;
+    }
+}
+/*---------------------------------------------*/
+
+/*Footer*/
+@media (max-width: 768px) {
+    footer {
+        flex-direction: column; /* Apilamos los elementos */
+        gap: 20px;              /* Espacio vertical entre logos y texto */
+        padding: 30px 20px;      /* Más espacio arriba/abajo, menos a los lados */
+        text-align: center;
+    }
+
+    footer p {
+        margin: 10px 0;
+    }
+    
+    .logo2 {
+        width: 100px; /* En móvil podemos darles más protagonismo */
+    }
+}
