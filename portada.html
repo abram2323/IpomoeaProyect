@@ -18,7 +18,7 @@
     </div>
 
     <div class="nav-links" id="navLinks">
-        <a href="">Base de datos</a>
+        <a href="baseDeDatos.php">Base de datos</a>
         <a href="genero.html">El género</a>
         <a href="proyecto.html">El proyecto</a>
     </div>
@@ -37,10 +37,41 @@
     </div>
 
     <div class="hero-buttons">
-        <button class="btn-somos" id="btnSomos">¿Quiénes somos?</button>
-        <button class="btn-proyecto" id="btnContacto">Contáctanos</button>
+        <button class="btn-somos" id="btnContacto">Contáctanos</button>
     </div>
 </section>
+
+<div class="noticias">
+    <article class="card">
+        <div class="card-header">
+            <img src="img/planta.png" alt="Plantas" class="card-img">
+        </div>
+  
+        <div class="card-body">
+            <h2>Claves de identificación</h2>
+            <ul>
+                <li>Por país o región</li>
+                <li>Por clado</li>
+                <li>Clave general (solo para especies americanas)</li>
+            </ul>
+        </div>
+    </article>
+
+    <article class="card">
+        <div class="card-header">
+            <img src="img/datos.png" alt="Plantas" class="card-img">
+        </div>
+
+        <div class="card-body">
+            <h2>Datos moleculares</h2>
+            <ul>
+                <li>Filogenias completas</li>
+                <li>Cebadores para la secuenciación de Sanger</li>
+                <li>Análisis de explosión</li>
+            </ul>
+        </div>
+    </article>
+</div>
 
 <div class="diseñoFormulario">
     <div class="contenedor-imagen">
@@ -89,11 +120,12 @@
     </form>
 </div>
 
+
 <footer>
     <a href="https://www.csic.es/es">
         <img src="img/CSIC.png" alt="CSIC" class="logo2">
     </a>
-        <p>Copyrigh © Flora de Guinea Ecuatorial 2026</p>
+        <p>Copyrigh © Proyecto Ipomoea 2026</p>
     <a href="https://www.ucm.es/">
         <img src="img/complutense.png" alt="Complutense" class="logo2">
     </a>
@@ -146,6 +178,13 @@
             hamburger.innerHTML = '☰';
             document.body.style.overflow = 'auto'; // Habilitar scroll de nuevo
         });
+    });
+</script>
+
+<!--Script para que me lleve al formulario-->
+<script>
+    document.getElementById("btnContacto").addEventListener("click", () => {
+    document.getElementById("formulario").scrollIntoView({ behavior: "smooth" });
     });
 </script>
 </body>

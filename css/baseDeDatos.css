@@ -1,0 +1,670 @@
+/* RESET BÁSICO */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    /*outline: 3px solid black;*/
+}
+
+html {
+  margin: 0;
+}
+
+body {
+    margin: 0;
+    overflow-x: hidden;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* HEADER */
+header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 50px;
+    background: linear-gradient(to bottom, rgba(50, 79, 135), rgba(192, 208, 240));
+    box-sizing: border-box; /* Evita que el padding rompa el ancho */
+    transition: all 0.3s ease;
+}
+
+/* HEADER SCROLLED */
+header.scrolled {
+    padding: 10px 30px; /* Reducimos padding lateral en scroll */
+}
+
+/* LOGO */
+header a{
+    font-size: 50px;
+    text-decoration: none;
+}
+
+header p{
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    color: white;
+}
+
+header.scrolled .logo {
+    height: 60px;
+}
+
+/* NAV */
+.nav-links {
+    display: flex;
+    gap: 30px;
+    
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: white;
+    font-size: 18px;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.nav-links a:hover {
+    color: #004d33;
+}
+
+/* Icono hamburguesa */
+.hamburger {
+    display: none;
+    font-size: 30px;
+    color: white;
+    cursor: pointer;
+}
+/*---------------------------*/
+
+/*LAYOUT ESTRUCTURAL */
+/* El contenedor que separa el formulario (izquierda) de la tabla (derecha) */
+.layout-principal {
+    display: flex;
+    min-height: calc(100vh - 130px); /* Ajustado según altura de tu header */
+}
+
+/* SIDEBAR Y FORMULARIO */
+.sidebar {
+    width: 320px;
+    background-color: #fff;
+    border-right: 1px solid #ddd;
+    flex-shrink: 0;
+    height: calc(100vh - 120px); /* Ajusta según el alto de tu header */
+    position: sticky;            /* Se queda fijo mientras haces scroll en la tabla */
+    top: 120px;                  /* Debe coincidir con la altura de tu header */
+    overflow-y: auto;
+}
+
+/* Personalizar el scroll solo para la sidebar */
+.sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 10px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+    background: #aaa;
+}
+
+.mi-formulario {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    font-family: sans-serif;
+    background-color: #fff;
+}
+
+.head {
+    display: flex;
+    justify-content: space-between; /* Uno a cada lado */
+    align-items: center;
+    padding: 15px 20px;
+}
+
+.head img{
+    width: 20px; 
+    height: 20px;
+    cursor: pointer; /* Recomendado si vas a usarlo para "limpiar" campos */
+    transition: transform 0.2s
+}
+
+.head label {
+    font-weight: bold;
+    color: #333;
+    flex-grow: 1;      /* El label ocupa todo el espacio central */
+    text-align: center; /* Centra el texto dentro de ese espacio */
+    margin-left: 20px;
+}
+
+.form-content {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* 5. DROPDOWNS Y ELEMENTOS INTERNOS */
+.dropdown {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.dropbtn, .form-group input {
+    width: 100%;
+    padding: 10px 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    box-sizing: border-box;
+    text-align: left;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.dropdown-content {
+    display: none;
+    position: static;
+    width: 100%;
+    background-color: #fafafa;
+    border: 1px solid #ddd;
+    border-top: none;
+    border-radius: 0 0 5px 5px;
+    max-height: 250px;
+    overflow-y: auto;
+    padding: 8px;
+}
+
+/* Agrupamos los estilos repetidos de los inputs de búsqueda en el dropdown */
+.dropdown-content input[name="nombre_cientifico"],
+.dropdown-content input[name="coordenadas"],
+.dropdown-content input[name="localidad"] {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 14px;
+}
+
+.dropdown:has(.show) .dropbtn {
+    border-radius: 5px 5px 0 0;
+    background-color: #f0f0f0;
+}
+
+.dropdown-content label {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.dropdown-content label:hover { 
+    background-color: #f1f1f1; 
+}
+
+.dropdown-content input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+.show { 
+    display: block !important; 
+}
+
+/* 6. INPUT RANGE (AÑO) */
+input[type="range"] {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 8px;
+    background: #ddd;
+    border-radius: 5px;
+    outline: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    background: #007BFF;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background .3s;
+}
+
+/* 7. BOTÓN SUBMIT */
+.btn-submit {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.btn-submit:hover { 
+    background-color: #0056b3;
+}
+
+.btn-responsive-filtros {
+    display: none; 
+    width: 100%;
+    padding: 15px;
+    background-color: #A67B5B; /* Marrón claro base */
+    color: white;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    text-align: center;
+    font-size: 16px;
+    border-radius: 5px; /* Ligera curvatura para que no sea tan tosco */
+}
+/*------------------------------*/
+
+/*Tabla*/
+/* Contenedor necesario para móviles (debes envolver la <table> en un <div class="contenedor-tabla">) */
+.contenedor-tabla {
+    width: 100%;
+    max-width: 100vw; /* No permite que sea más ancho que la pantalla */
+    overflow-x: auto; /* El scroll horizontal ocurre SOLO aquí dentro */
+    -webkit-overflow-scrolling: touch; /* Scroll suave en iPhone */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.tabla-resultados {
+    width: 100%;
+    min-width: 800px; /* Obliga a la tabla a tener al menos 800px de ancho */
+    border-collapse: separate; /* Permite usar border-spacing */
+    border-spacing: 0;/
+}
+
+.tabla-resultados th {
+    color: white;
+    background-color: #3e5f41; /* Tu verde original */
+}
+
+.tabla-resultados td {
+    border-bottom: 1px solid #eee;
+}
+
+.tabla-resultados th, 
+.tabla-resultados td {
+    padding: 15px;
+    white-space: nowrap; /* Evita que el texto se rompa en varias líneas y se amontone */
+    text-align: left;
+}
+
+.col-id { min-width: 150px; }
+.col-genero { min-width: 150px; }
+.col-especie { min-width: 150px; }
+.col-localidad { min-width: 150px; }
+.col-pais { min-width: 150px; }
+/* Filas alternas para mejor lectura */
+.tabla-resultados {
+    background-color: #fafafa;
+}
+
+.tabla-resultados tr:hover { 
+    background-color: #f1f8f1; /* Un verde muy pálido al pasar el ratón */
+    transition: background-color 0.2s ease;
+}
+
+.cientifico { 
+    font-style: italic; 
+    font-weight: 600;
+    color: #2e4a30; /* Un verde oscuro para destacar el nombre científico */
+}
+
+.sin-resultados {
+    padding: 40px;
+    text-align: center;
+    color: #888;
+    font-style: italic;
+}
+
+.sin-resultados p{
+    align-items: center;
+    justify-content: center;
+    margin-top: 150px;
+}
+
+/*Diseño del scroll de la tabla*/
+.contenedor-tabla::-webkit-scrollbar {
+    width: 6px;
+}
+
+.contenedor-tabla::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.contenedor-tabla::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 10px;
+}
+
+.contenedor-tabla::-webkit-scrollbar-thumb:hover {
+    background: #aaa;
+}
+/*-----------------------------------------*/
+
+/*Para que se pueda hacer click en las filas de las columnas*/
+.fila-clicable {
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.fila-clicable:hover {
+    background-color: #f0f8ff; /* Un color suave al pasar el mouse */
+}
+/*------------------------------------------*/
+
+/*Paginacion*/
+.zona-derecha {
+    flex: 1; /* Ocupa el resto del espacio */
+    display: flex;
+    flex-direction: column;
+    min-width: 0; /* CRÍTICO: Permite que el contenido interno tenga scroll */
+}
+
+/* Estilos de Paginación Inteligente */
+.paginacion-container {
+    display: flex;
+    justify-content: center;
+    margin: 30px 0;
+}
+
+.paginacion {
+    display: flex;
+    font-size: 0; /* Mata los espacios en blanco de texto entre etiquetas */
+    border: 1px solid #ccc;
+}
+
+.paginacion a, .paginacion span {
+    padding: 10px 15px;
+    text-decoration: none;
+    color: #42a5f5; /* El azul de los números en tu imagen */
+    background-color: #fff;
+    border-right: 1px solid #ccc; /* Línea divisoria entre botones */
+    font-family: sans-serif;
+    font-size: 12px;
+    min-width: 40px;
+    text-align: center;
+}
+
+.paginacion a:last-child, .paginacion span:last-child {
+    border-right: none;
+}
+
+.paginacion a.active {
+    background-color: #76b077; /* Verde de la imagen */
+    color: white;
+    cursor: default;
+}
+
+.paginacion span.dots {
+    color: #999;
+    background-color: #fff;
+}
+
+.paginacion a:hover:not(.active) {
+    background-color: #f5f5f5;
+    color: #2196f3;
+}
+/*------------------------------------------------*/
+
+/* FOOTER */
+footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 50px;
+    background: linear-gradient(to bottom,  rgba(192, 208, 240));
+    width: 100%;
+    color: white;
+    box-sizing: border-box; /* Fundamental para evitar el desborde lateral */
+}
+
+.logo2 {
+    width: 120px; /* Un poco más grande para que se aprecie el detalle */
+    height: auto;
+    transition: transform 0.3s ease;
+}
+
+.logo2:hover {
+    transform: scale(1.1);
+}
+
+footer p {
+    font-size: 0.9rem;
+    text-align: center;
+    margin: 0 15px;
+}
+/*---------------------------------------------*/
+
+/* RESPONSIVE */
+/*Header*/
+@media (max-width: 768px) {
+    header {
+        padding: 15px 20px;
+    }
+
+    .hamburger {
+        display: block;
+        z-index: 2000; /* Aseguramos que el botón esté por encima de todo */
+        position: relative;
+    }
+
+    .nav-links {
+        position: fixed;
+        top: 0;
+        right: -100%; /* Totalmente fuera de la pantalla */
+        width: 100%;  /* OCUPA TODA LA PANTALLA */
+        height: 100vh;
+        background: linear-gradient(to bottom,rgba(50, 79, 135), rgba(192, 208, 240));
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        transition: right 0.5s ease-in-out; /* Animación un pelín más lenta para que luzca */
+        z-index: 1500;
+        backdrop-filter: blur(10px);
+    }
+
+    .nav-links.active {
+        right: 0; /* Entra hasta cubrirlo todo */
+    }
+
+    .nav-links a {
+        font-size: 28px; /* Enlaces más grandes para llenar el espacio */
+        margin: 25px 0;
+        width: 100%;    /* Para que el área de clic sea mayor */
+        text-align: center;
+    }
+}
+/*----------------------------------*/
+
+/*Responsive de la tabla y formulario*/
+@media (max-width: 768px) {
+    /* El botón circular en la esquina derecha */
+    .btn-responsive-filtros {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 10001;
+        
+        /* CAMBIOS PARA FORMA RECTANGULAR */
+        width: auto;           /* El ancho se adapta al texto "Filtros" */
+        min-width: 100px;      /* Un ancho mínimo para que sea fácil de pulsar */
+        height: 45px;          /* Altura fija de botón estándar */
+        padding: 0 20px;       /* Espacio a los lados del texto */
+        border-radius: 4px;    /* Forma rectangular (casi 0 para esquinas vivas) */
+        
+        /* CAMBIO DE COLOR (Marrón Claro/Arena) */
+        background-color: #C29B6D; /* Un tono marrón claro tierra */
+        color: white;
+        font-size: 16px;       /* Tamaño de fuente más equilibrado para rectángulo */
+        
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        border: 1px solid #A67B5B; /* Un borde sutil más oscuro para dar definición */
+    }
+
+    /* La sidebar como un panel que cubre la pantalla */
+    .sidebar {
+        display: none; /* Oculta por defecto */
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;   /* Ancho completo de pantalla */
+        height: 100vh;  /* Alto completo de pantalla */
+        background-color: white;
+        z-index: 10000;
+        overflow-y: auto;
+        padding-bottom: 80px; /* Espacio para que el botón no tape el final del form */
+    }
+
+    .sidebar.active {
+        display: block !important;
+    }
+
+    /* Ajuste para que el formulario interno ocupe bien el espacio */
+    .mi-formulario {
+        height: auto;
+        min-height: 100%;
+    }
+}
+/*-------------------------------------------*/
+
+/*Responsive para el botón del formulario*/
+@media (max-width: 768px) {
+    /* ... otros estilos del botón ... */
+
+    .sidebar {
+        /* 1. Siempre está "presente" pero fuera de la vista */
+        display: block !important; 
+        position: fixed;
+        top: 120px; 
+        left: 0;
+        width: 70%; 
+        height: calc(100vh - 120px); 
+        background-color: white;
+        z-index: 10000;
+        overflow-y: auto;
+        border-right: 1px solid #ddd;
+
+        /* 2. ESTADO OCULTO (Por defecto) */
+        transform: translateX(-100%); /* Lo mandamos a la izquierda, fuera de pantalla */
+        transition: transform 0.4s ease-in-out, visibility 0.4s; /* La magia ocurre aquí */
+        visibility: hidden; 
+        box-shadow: none;
+    }
+
+    /* 3. ESTADO ACTIVO (Cuando el JS añade la clase) */
+    .sidebar.active {
+        transform: translateX(0); /* Vuelve a su posición original */
+        visibility: visible;
+        box-shadow: 5px 0 15px rgba(0,0,0,0.3);
+    }
+
+    body:has(.sidebar.active) .btn-responsive-filtros {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+    }
+
+    
+}
+
+/* Animación de entrada (opcional) */
+@keyframes slideIn {
+    from { transform: translateX(-100%); }
+    to { transform: translateX(0); }
+}
+/*----------------------------*/
+
+/*Paginación*/
+@media (max-width: 768px) {
+    .paginacion-container {
+        justify-content: center;
+        padding: 10px 0;
+        overflow: hidden; /* Evitamos cualquier asomo de scroll */
+    }
+
+    .paginacion {
+        display: flex; /* Cambia inline-flex por flex */
+        flex-wrap: nowrap; /* Evita que los botones salten de línea */
+        gap: 0; /* Asegura que no haya espacio entre botones */
+    }
+
+    .paginacion a, .paginacion span {
+        padding: 6px 8px; /* Reducimos padding lateral */
+        font-size: 11px;  /* Tamaño intermedio */
+        min-width: 30px;
+        flex: 1 1 auto;
+    }
+
+    /* Reducimos aún más el Previous/Next para que no empujen el resto */
+    .paginacion a:first-child, 
+    .paginacion a:last-child {
+        padding: 6px 5px;
+        font-size: 10px; /* Texto más pequeño para que quepa "Previous" */
+    }
+}
+
+/* Ajuste extremo para pantallas muy pequeñas (iPhone SE / Mini) */
+@media (max-width: 360px) {
+    .paginacion a, .paginacion span {
+        padding: 4px 5px;
+        font-size: 10px;
+        min-width: 25px;
+    }
+
+    .paginacion a:first-child, 
+    .paginacion a:last-child {
+        font-size: 9px; /* Tamaño mínimo para palabras largas */
+        max-width: 55px; /* Evita que crezcan demasiado */
+        overflow: hidden;
+    }
+}
+/*-------------------------------------*/
+
+/*Footer*/
+@media (max-width: 768px) {
+    footer {
+        flex-direction: column; /* Apilamos los elementos */
+        gap: 20px;              /* Espacio vertical entre logos y texto */
+        padding: 30px 20px;      /* Más espacio arriba/abajo, menos a los lados */
+        text-align: center;
+        margin-top: auto;
+    }
+
+    footer p {
+        margin: 10px 0;
+    }
+    
+    .logo2 {
+        width: 100px; /* En móvil podemos darles más protagonismo */
+    }
+}
+/*-------------------------------------*/

@@ -296,13 +296,73 @@ header.scrolled .logo {
 }
 /*---------------------------*/
 
+/* NOTICIAS */
+.noticias {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+.card {
+    background: #fff;
+    border-radius: 15px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* Para que todas midan lo mismo en PC */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-header {
+    position: relative;
+    height: 200px;
+}
+
+.card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.card-img:hover {
+    transform: scale(1.05);
+}
+
+.card-body {
+    padding: 20px;
+    flex-grow: 1; /* Empuja el botón hacia abajo para que todos estén alineados */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.card-body h2 {
+    margin-bottom: 10px;
+    color: #1a2b3c;
+    font-size: 1.5rem;
+}
+
+.card ul {
+
+}
+
+.card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
 /* FOOTER */
 footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 20px 50px;
-    background: linear-gradient(to bottom,rgba(232, 252, 252),rgba(192, 208, 240), rgba(50, 79, 135));
+    background: linear-gradient(to bottom,  rgba(192, 208, 240));
     width: 100%;
     color: white;
     box-sizing: border-box; /* Fundamental para evitar el desborde lateral */
@@ -372,24 +432,54 @@ footer p {
 }
 /*----------------------------------*/
 
-/*Section*/
+/*Noticias*/
 @media (max-width: 768px) {
-    .hero h1 {
-        font-size: 2rem; /* Título más pequeño */
+    /* Contenedor padre para la línea inferior centrada */
+    .noticias {
+        display: flex;             /* De grid a fila horizontal */
+        overflow-x: auto;          /* Permite el scroll lateral */
+        scroll-snap-type: x mandatory; /* Ajuste magnético al centro */
+        gap: 20px;
+        padding: 20px 0;           /* Espacio arriba y abajo */
+        
+        /* Efecto línea: espacio - línea - espacio */
+        width: 85%;                
+        margin: 0 auto;            
+        border-bottom: 2px solid #ccc;
+        
+        /* Ocultar barra de scroll para estética */
+        scrollbar-width: none; 
+    }
+    
+    .noticias::-webkit-scrollbar { 
+        display: none; 
     }
 
-    .hero-buttons {
-        flex-direction: column; /* Botones uno encima de otro para que sea fácil pulsar con el pulgar */
-        width: 100%;
-        max-width: 300px; /* Para que no ocupen todo el ancho de la pantalla */
+    /* Cada tarjeta de noticia */
+    .card {
+        flex: 0 0 85%;             /* Cada card ocupa el 85% del ancho */
+        scroll-snap-align: center; /* Se imanta al centro de la pantalla */
+        transform: none !important; /* Quitamos efectos de escala para evitar saltos */
+        max-width: none;           /* Eliminamos el límite de ancho de PC */
+        height: auto;              /* Que se adapte al contenido del texto */
     }
 
-    .hero-buttons .btn-somos, 
-    .hero-buttons .btn-proyecto {
-        width: 100%; /* Botones de ancho completo dentro de su contenedor */
+    /* Ajuste de la imagen dentro de la card */
+    .card-header {
+        height: 200px;             /* Altura fija para mantener uniformidad */
+    }
+
+    /* Títulos un poco más contenidos para móvil */
+    .card-body h2 {
+        font-size: 1.3rem;
+    }
+
+    /* Aseguramos que el hover no dispare transformaciones raras en táctil */
+    .card:hover {
+        transform: none;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     }
 }
-/*-------------------------------*/
 
 /*Diseño Formulario*/
 @media (max-width: 768px) {

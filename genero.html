@@ -17,7 +17,7 @@
     </div>
 
     <div class="nav-links" id="navLinks">
-        <a href="">Base de datos</a>
+        <a href="baseDeDatos.php">Base de datos</a>
         <a href="genero.html">El género</a>
         <a href="proyecto.html">El proyecto</a>
     </div>
@@ -39,5 +39,62 @@
         <button class="btn-proyecto" id="btnContacto">Contáctanos</button>
     </div>
 </section>
+
+<div class="texto">
+    <h1>¿En qué consiste nuestro trabajo?</h1>
+    <p>Carl Linnaeus  describió el género de plantas  Ipomoea  L. y diecisiete especies en 1753, en la primera edición de su  Species Plantarum . Desde entonces, se han publicado más de 3000 nombres asociados con el género, lo que convierte  a Ipomoea  en el género más grande de la  familia Convolvulaceae . Incluye hierbas, arbustos, lianas y árboles distribuidos por todas las regiones tropicales y subtropicales del mundo, desde el nivel del mar hasta los 4000 metros, y abarcando diversos hábitats, desde selvas tropicales hasta ambientes costeros semiáridos. El género también se extiende a regiones templadas tan al norte como Canadá, con varias especies de amplia distribución que alcanzan distribuciones casi globales. Estimamos que el género incluye entre 850 y 900 especies, varias aún pendientes de descripción formal, con aproximadamente
+
+Dos especies tienen importancia económica mundial como cultivos: la batata o camote,  Ipomoea batatas  (L.) Lam., y la espinaca acuática o kang-kong,  I. aquatica  Forssk. Además, muchas especies se cultivan ampliamente como ornamentales —el grupo se conoce comúnmente como campanillas— , mientras que otras se han vuelto invasoras, por ejemplo  I. cairica  (L.) Sweet,  I. indica  (Burm.) Merr. e  I. purpurea  (L.) Roth. Las especies de Ipomoea también son de interés por su potencial farmacológico, y múltiples estudios han identificado propiedades antitumorales en varios compuestos extraídos de sus hojas y raíces.
+
+Nuestra investigación, que combina análisis filogenómicos y morfológicos exhaustivos, confirmó que Ipomoea , tal como se circunscribe tradicionalmente, es parafilético con respecto a varios géneros más pequeños ( Argyreia , Astripomoea , Blinkworthia , Lepistemon , Lepistemonopsis , Rivea , Stictocardia y Turbina ) de la tribu Ipomoeeae . Basándonos en nuestros resultados y en los de autores anteriores, sostenemos que las clasificaciones existentes deben abandonarse y que reconocer una Ipomoea ampliada que incorpore todos los géneros segregados de la tribu Ipomoeeae es la solución más apropiada, ya que concilia las propiedades de monofilia, diagnosticabilidad y completitud, y favorece la estabilidad nomenclatural. Hemos presentado y discutido esta visión de un género monofilético ampliado en detalle en varios artículos revisados ​​por pares y capítulos de libros publicados desde 2019, por ejemplo [ 1 ], [ 2 ], [ 3 ] y [ 4 ], y toda la información en este sitio web sigue esta decisión.</p>
+</div>
+
+<footer>
+    <a href="https://www.csic.es/es">
+        <img src="img/CSIC.png" alt="CSIC" class="logo2">
+    </a>
+        <p>Copyrigh © Proyecto Ipomoea 2026</p>
+    <a href="https://www.ucm.es/">
+        <img src="img/complutense.png" alt="Complutense" class="logo2">
+    </a>
+</footer>
+
+
+<!-- JS para header que cambia tamaño -->
+<script>
+    window.addEventListener("scroll", function() {
+        const header = document.querySelector("header");
+
+        // Evita vibrar usando >= y <= y solo cuando cambia
+        if (window.scrollY > 50 && !header.classList.contains("scrolled")) {
+            header.classList.add("scrolled");
+        } else if (window.scrollY <= 50 && header.classList.contains("scrolled")) {
+            header.classList.remove("scrolled");
+        }
+    });
+</script>
+
+<!--Icono hamburguesa-->
+<script>
+        hamburger.addEventListener('click', () => {
+        navLinks.classList.toggle('active');
+        
+        // Cambia el icono
+        const isOpen = navLinks.classList.contains('active');
+        hamburger.innerHTML = isOpen ? '✕' : '☰';
+
+        // BLOQUEAR SCROLL: Evita que la web se mueva por detrás
+        document.body.style.overflow = isOpen ? 'hidden' : 'auto';
+    });
+
+    // No olvides resetear el scroll si hacen clic en un enlace
+    document.querySelectorAll('.nav-links a').forEach(link => {
+        link.addEventListener('click', () => {
+            navLinks.classList.remove('active');
+            hamburger.innerHTML = '☰';
+            document.body.style.overflow = 'auto'; // Habilitar scroll de nuevo
+        });
+    });
+</script>
 </body>
 </html>

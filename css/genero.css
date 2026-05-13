@@ -179,3 +179,148 @@ header.scrolled .logo {
     background-color: #d24f39;
 }
 /*------------------------------------*/
+
+/*TEXTO */
+.texto {
+    max-width: 1200px;
+    margin: 3rem auto; /* Usamos rem para mejor escalado */
+    padding: 0 5%;    /* Padding porcentual para que se adapte a cualquier ancho */
+    
+    /* CAMBIO CLAVE: Columnas inteligentes */
+    column-width: 350px; /* Si hay menos de 350px de ancho, se vuelve 1 sola columna */
+    column-gap: 50px;
+    
+    font-family: 'Merriweather', Georgia, serif;
+    padding-bottom: 40px;
+    border-bottom: 2px solid #ccc;
+    margin-bottom: 40px;
+}
+
+.texto h1 {
+    font-size: clamp(2rem, 5vw, 3.2rem); /* Tipografía fluida: se ajusta sola entre 2rem y 3.2rem */
+    text-align: center;
+    margin-bottom: 30px;
+    column-span: all;
+    color: black;
+}
+
+.texto p {
+    font-size: 1.1rem; /* Un poco más flexible que 18px */
+    line-height: 1.8;  /* 2 es un poco alto, 1.8 suele ser el "punto dulce" de lectura */
+    text-align: justify;
+    color: black;
+    margin-top: 0;    /* Evita huecos raros al inicio de la columna */
+}
+/*------------------------------------*/
+
+/* FOOTER */
+footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 50px;
+    background: linear-gradient(to bottom,rgba(232, 252, 252),rgba(192, 208, 240), rgba(50, 79, 135));
+    width: 100%;
+    color: white;
+    box-sizing: border-box; /* Fundamental para evitar el desborde lateral */
+}
+
+.logo2 {
+    width: 120px; /* Un poco más grande para que se aprecie el detalle */
+    height: auto;
+    transition: transform 0.3s ease;
+}
+
+.logo2:hover {
+    transform: scale(1.1);
+}
+
+footer p {
+    font-size: 0.9rem;
+    text-align: center;
+    margin: 0 15px;
+}
+/*---------------------------------------------*/
+
+/* RESPONSIVE */
+/*Header*/
+@media (max-width: 768px) {
+    header {
+        padding: 15px 20px;
+    }
+
+    header a {
+        font-size: 22px;
+    }
+
+    .hamburger {
+        display: block;
+        z-index: 2000; /* Aseguramos que el botón esté por encima de todo */
+        position: relative;
+    }
+
+    .nav-links {
+        position: fixed;
+        top: 0;
+        right: -100%; /* Totalmente fuera de la pantalla */
+        width: 100%;  /* OCUPA TODA LA PANTALLA */
+        height: 100vh;
+        background: linear-gradient(to bottom,rgba(50, 79, 135), rgba(192, 208, 240));
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        transition: right 0.5s ease-in-out; /* Animación un pelín más lenta para que luzca */
+        z-index: 1500;
+        backdrop-filter: blur(10px);
+    }
+
+    .nav-links.active {
+        right: 0; /* Entra hasta cubrirlo todo */
+    }
+
+    .nav-links a {
+        font-size: 28px; /* Enlaces más grandes para llenar el espacio */
+        margin: 25px 0;
+        width: 100%;    /* Para que el área de clic sea mayor */
+        text-align: center;
+    }
+}
+/*----------------------------------*/
+
+/*Section*/
+@media (max-width: 768px) {
+    .hero h1 {
+        font-size: 2rem; /* Título más pequeño */
+    }
+
+    .hero-buttons {
+        flex-direction: column; /* Botones uno encima de otro para que sea fácil pulsar con el pulgar */
+        width: 100%;
+        max-width: 300px; /* Para que no ocupen todo el ancho de la pantalla */
+    }
+
+    .hero-buttons .btn-somos, 
+    .hero-buttons .btn-proyecto {
+        width: 100%; /* Botones de ancho completo dentro de su contenedor */
+    }
+}
+/*-------------------------------*/
+
+/*Footer*/
+@media (max-width: 768px) {
+    footer {
+        flex-direction: column; /* Apilamos los elementos */
+        gap: 20px;              /* Espacio vertical entre logos y texto */
+        padding: 30px 20px;      /* Más espacio arriba/abajo, menos a los lados */
+        text-align: center;
+    }
+
+    footer p {
+        margin: 10px 0;
+    }
+    
+    .logo2 {
+        width: 100px; /* En móvil podemos darles más protagonismo */
+    }
+}
