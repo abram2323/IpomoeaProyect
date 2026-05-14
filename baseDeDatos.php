@@ -1,3 +1,74 @@
+<?php
+    // 1. CONFIGURACIÓN DE LA CONEXIÓN (Actualizado)
+    $host = "localhost";
+    $user = "root"; 
+    $pass = "";     
+    $db   = "ipomoeaproject"; // Nombre de tu nueva base de datos
+
+    mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+
+    try {
+        $conn = new mysqli($host, $user, $pass, $db);
+        $conn->set_charset("utf8mb4");
+    } catch (Exception $e) {
+        die("Error crítico de conexión: " . $e->getMessage());
+    }
+
+    // 2. CONFIGURACIÓN DE PAGINACIÓN
+    $resultados_por_pagina = 15;
+    $pagina_actual = (isset($_GET['pagina']) && is_numeric($_GET['pagina'])) ? max(1, (int)$_GET['pagina']) : 1;
+    $inicio_limite = ($pagina_actual - 1) * $resultados_por_pagina;
+
+    $termino = isset($_GET['buscador']) ? trim($_GET['buscador']) : '';
+
+    // 3. LÓGICA DE FILTROS DINÁMICOS
+    $where_clause = " WHERE 1=1";
+    $params = [];
+    $types = "";
+
+    // Filtro de búsqueda general ajustado a image_a28cf5.png
+    if (!empty($termino)) {
+        $q_like = "%" . $termino . "%";
+        
+        // Usamos los nombres exactos de la imagen
+        $where_clause .= " AND (`Record Guid` LIKE ? 
+                            OR Collectors LIKE ? 
+                            OR CountryName LIKE ? 
+                            OR CalcFullName LIKE ? 
+                            OR GenusSection LIKE ?
+                            OR CollectionYear LIKE ?)"; 
+        
+        array_push($params, $q_like, $q_like, $q_like, $q_like, $q_like, $q_like);
+        $types .= "ssssss"; 
+    }
+
+    // 4. CONTEO TOTAL
+    $stmt_conteo = $conn->prepare("SELECT COUNT(*) as total FROM datos_ipomoea $where_clause");
+    if (!empty($params)) {
+        $stmt_conteo->bind_param($types, ...$params);
+    }
+    $stmt_conteo->execute();
+    $total_registros = $stmt_conteo->get_result()->fetch_assoc()['total'];
+    $total_paginas = ceil($total_registros / $resultados_por_pagina);
+
+    // 5. CONSULTA DE DATOS (Nombres exactos de la imagen image_a28cf5.png)
+    // Nota: Como 'Record Guid' tiene un espacio, lo encerramos en comillas invertidas ``
+    $sql_datos = "SELECT `Record Guid`, Collectors, CountryName, CalcFullName, GenusSection, CollectionYear
+                FROM datos_ipomoea 
+                $where_clause 
+                LIMIT ?, ?";
+
+    $stmt_datos = $conn->prepare($sql_datos);
+
+    $types_datos = $types . "ii";
+    $params_datos = $params;
+    array_push($params_datos, $inicio_limite, $resultados_por_pagina);
+
+    $stmt_datos->bind_param($types_datos, ...$params_datos);
+    $stmt_datos->execute();
+    $resultado = $stmt_datos->get_result();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,6 +76,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="./css/baseDeDatos.css?v=<?php echo time(); ?>">
+    <!-- 1. Primero el CSS de Leaflet (OBLIGATORIO) -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.9.0/proj4.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mgrs@1.0.0/dist/mgrs.min.js"></script>
 
 </head>
 <body>
@@ -109,6 +186,9 @@
                         </div>
 
                         <button type="submit" class="btn-submit">Filtrar Resultados</button>
+                                <button type="button" id="btn-ver-tabla" class="btn-flotante-tabla">
+                                    Ver Lista de Datos
+                                </button>
                     </div>
                 </form>
         </aside>
@@ -120,26 +200,24 @@
                         <table class="tabla-resultados">
                             <thead>
                                 <tr>
-                                    <th class="col-id">ID</th>
-                                    <th class="col-genero">Género</th>
-                                    <th class="col-especie">Especie</th>
-                                    <th class="col-localidad">Localidad</th>
-                                    <th class="col-pais">País</th>
+                                    <th class="col-id">Record Guid</th>
+                                    <th class="col-genero">Collectors</th>
+                                    <th class="col-especie">CountryName</th>
+                                    <th class="col-localidad">CalcFullName</th>
+                                    <th class="col-pais">GenusSection</th>
+                                    <th class="col-pais">CollectionYear</th>
                                     
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php while($row = $resultado->fetch_assoc()): ?>
-                                    <tr class="fila-clicable" onclick="window.location.href='datosDePlantas.php?id=<?php echo $row['id']; ?>'">
-                                        <td class="col-id"><?php echo htmlspecialchars($row['id']); ?></td>
-                                        <td class="col-genero"><?php echo htmlspecialchars($row['generotxt']); ?></td>
-                                        <td class="col-especie"><?php echo htmlspecialchars($row['especietxt']); ?></td>
-                                        <td class="col-localidad"><?php echo htmlspecialchars($row['localidad']); ?></td>
-                                        <td class="col-pais"><?php echo htmlspecialchars($row['paistxt']); ?></td>
-                                        <td class="col-pais"><?php echo htmlspecialchars($row['paistxt']); ?></td>
-                                        <td class="col-pais"><?php echo htmlspecialchars($row['paistxt']); ?></td>
-                                        <td class="col-pais"><?php echo htmlspecialchars($row['paistxt']); ?></td>
-                                        <td class="col-pais"><?php echo htmlspecialchars($row['paistxt']); ?></td>
+                                    <tr>
+                                        <td class="col-id"><?php echo htmlspecialchars($row['Record Guid']); ?></td>
+                                        <td class="col-genero"><?php echo htmlspecialchars($row['Collectors']); ?></td>
+                                        <td class="col-especie"><?php echo htmlspecialchars($row['CountryName']); ?></td>
+                                        <td class="col-localidad"><?php echo htmlspecialchars($row['CalcFullName']); ?></td>
+                                        <td class="col-pais"><?php echo htmlspecialchars($row['GenusSection']); ?></td>
+                                        <td class="col-pais"><?php echo htmlspecialchars($row['CollectionYear']); ?></td>
                                     </tr>
                                 <?php endwhile; ?>
                             </tbody>
@@ -255,7 +333,7 @@
 </script>
 
 <!--JS para que funcione el botón de filtros--->
-    <script>
+<script>
         document.addEventListener('DOMContentLoaded', () => {
             const btnFiltros = document.getElementById('btn-toggle-filtros');
             const sidebar = document.getElementById('sidebar-filtros');
@@ -302,6 +380,81 @@
                 });
             }
         });
-    </script>    
+</script>
+
+<script>
+    // 1. Preparar datos de PHP a JS
+    const puntosIpomoea = [
+        <?php 
+        mysqli_data_seek($resultado, 0); 
+        while($fila = $resultado->fetch_assoc()): 
+        ?>
+        {
+            lat: <?php echo (float)($fila['DecimalLatitude'] ?? 0); ?>,
+            lng: <?php echo (float)($fila['DecimalLongitude'] ?? 0); ?>,
+            utm: "<?php echo $fila['UTM_Grid'] ?? ''; ?>", 
+            nombre: "<?php echo addslashes($fila['CalcFullName']); ?>",
+            colector: "<?php echo addslashes($fila['Collectors']); ?>",
+            pais: "<?php echo addslashes($fila['CountryName']); ?>"
+        },
+        <?php endwhile; ?>
+    ];
+
+    function inicializarMapa() {
+        const esMovil = L.Browser.mobile;
+        const mapDiv = document.getElementById('mapa');
+        
+        // Inicializar Leaflet con tu configuración de seguridad
+        const map = L.map('mapa', {
+            scrollWheelZoom: false,
+            dragging: !esMovil,
+            tap: !esMovil,
+            touchZoom: esMovil ? 'center' : true
+        }).setView([0, 0], 2);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; Flora de Guinea Ecuatorial'
+        }).addTo(map);
+
+        const bounds = L.latLngBounds();
+        const iconoRojo = L.icon({
+            iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+            shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+            iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34], shadowSize: [41, 41]
+        });
+
+        // Pintar todos los marcadores
+        puntosIpomoea.forEach(p => {
+            let pLat = p.lat, pLng = p.lng;
+            if ((pLat === 0 || pLng === 0) && p.utm !== "") {
+                try {
+                    const coords = mgrs.toPoint(p.utm.replace(/\s+/g, '').toUpperCase().trim());
+                    pLng = coords[0]; pLat = coords[1];
+                } catch(e) {}
+            }
+
+            if (pLat !== 0 && pLng !== 0) {
+                L.marker([pLat, pLng], { icon: iconoRojo }).addTo(map)
+                    .bindPopup(`<b>${p.nombre}</b><br>País: ${p.pais}<br><small>Coll: ${p.colector}</small>`);
+                bounds.extend([pLat, pLng]);
+            }
+        });
+
+        if (bounds.isValid()) map.fitBounds(bounds, { padding: [50, 50] });
+
+        // --- Lógica de avisos y Ctrl (reutilizada de tu otro script) ---
+        // (Aquí pegas tus funciones mostrarAviso, mapDiv.addEventListener('wheel'), etc.)
+
+        // Gestión del panel de la tabla
+        const btnVer = document.getElementById('btn-ver-tabla');
+        const btnCerrar = document.getElementById('btn-cerrar-tabla');
+        const panel = document.getElementById('panel-tabla');
+
+        btnVer.onclick = () => panel.classList.add('active');
+        btnCerrar.onclick = () => panel.classList.remove('active');
+    }
+
+    document.addEventListener('DOMContentLoaded', inicializarMapa);
+</script>
 </body>
 </html>

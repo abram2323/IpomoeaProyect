@@ -440,6 +440,7 @@ footer {
     width: 100%;
     color: white;
     box-sizing: border-box; /* Fundamental para evitar el desborde lateral */
+    margin-top: auto; /* Esto garantiza que se pegue al final */
 }
 
 .logo2 {
