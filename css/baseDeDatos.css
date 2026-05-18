@@ -85,8 +85,11 @@ header.scrolled .logo {
 /*LAYOUT ESTRUCTURAL */
 /* El contenedor que separa el formulario (izquierda) de la tabla (derecha) */
 .layout-principal {
-    display: flex;
-    min-height: calc(100vh - 130px); /* Ajustado según altura de tu header */
+    display: flex; /* Pone los elementos en línea horizontal */
+    height: calc(100vh - 80px); /* Ajusta el alto restando lo que mida tu header */
+    width: 100%;
+    overflow: hidden;
+    position: relative;
 }
 
 /* SIDEBAR Y FORMULARIO */

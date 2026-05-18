@@ -83,6 +83,77 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.9.0/proj4.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mgrs@1.0.0/dist/mgrs.min.js"></script>
 
+    <style>
+    /* Layout para el mapa a pantalla completa */
+    #mapa {
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+    }
+
+    /* Botón flotante para la tabla */
+    .btn-flotante-tabla {
+        position: absolute;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 1001;
+        padding: 12px 24px;
+        background: #2d5a27;
+        color: white;
+        border: none;
+        border-radius: 50px;
+        font-weight: bold;
+        cursor: pointer;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        transition: all 0.3s;
+    }
+
+    .btn-flotante-tabla:hover { 
+        background: #3e7a36; transform: translateX(-50%) scale(1.05);
+    }
+
+    /* Panel Desplegable de la Tabla */
+    .panel-desplegable {
+        position: fixed;
+        bottom: -100%;
+        right: 0;
+        width: 50%;
+        height: 90vh;
+        background: white;
+        z-index: 2000;
+        transition: bottom 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        box-shadow: 0 -5px 25px rgba(0,0,0,0.2);
+        display: flex;
+        flex-direction: column;
+    }
+
+    .panel-desplegable.active { 
+        bottom: 0;
+    }
+
+    .header-panel {
+        padding: 15px 25px;
+        background: #f1f1f1;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 2px solid #2d5a27;
+    }
+
+    .contenido-tabla { 
+        overflow: auto; 
+        flex-grow: 1; 
+    }
+    #btn-cerrar-tabla { 
+        background: none; 
+        border: none; 
+        font-size: 24px; 
+        cursor: pointer; 
+        color: #666; 
+    }
+</style>
+
 </head>
 <body>
 <header>
@@ -102,8 +173,14 @@
 </header>
 
     <div class="layout-principal">
+        
+
         <button type="button" id="btn-toggle-filtros" class="btn-responsive-filtros">
             Filtros
+        </button>
+
+        <button type="button" id="btn-ver-tabla" class="btn-flotante-tabla">
+         Ver Lista de Registros
         </button>
 
         <aside class="sidebar" id="sidebar-filtros">
@@ -124,13 +201,6 @@
                             <div class="dropdown-content">
                                 <input type="text" name="nombre_cientifico" placeholder="Buscar"
                                 value="<?php echo isset($_GET['nombre_cientifico']) ? htmlspecialchars($_GET['nombre_cientifico']) : ''; ?>">
-                            </div>
-                        </div>
-
-                        <div class="dropdown">
-                            <button type="button" class="dropbtn">Coordenadas<span>▼</span></button>
-                            <div class="dropdown-content">
-                                <input type="text" name="coordenadas" placeholder="Buscar">
                             </div>
                         </div>
 
@@ -186,111 +256,120 @@
                         </div>
 
                         <button type="submit" class="btn-submit">Filtrar Resultados</button>
-                                <button type="button" id="btn-ver-tabla" class="btn-flotante-tabla">
-                                    Ver Lista de Datos
-                                </button>
+                        
                     </div>
                 </form>
         </aside>
 
-        <div class="zona-derecha">
-            <div>
-                <?php if ($resultado && $resultado->num_rows > 0): ?>
-                    <div class="contenedor-tabla">
-                        <table class="tabla-resultados">
-                            <thead>
-                                <tr>
-                                    <th class="col-id">Record Guid</th>
-                                    <th class="col-genero">Collectors</th>
-                                    <th class="col-especie">CountryName</th>
-                                    <th class="col-localidad">CalcFullName</th>
-                                    <th class="col-pais">GenusSection</th>
-                                    <th class="col-pais">CollectionYear</th>
-                                    
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php while($row = $resultado->fetch_assoc()): ?>
-                                    <tr>
-                                        <td class="col-id"><?php echo htmlspecialchars($row['Record Guid']); ?></td>
-                                        <td class="col-genero"><?php echo htmlspecialchars($row['Collectors']); ?></td>
-                                        <td class="col-especie"><?php echo htmlspecialchars($row['CountryName']); ?></td>
-                                        <td class="col-localidad"><?php echo htmlspecialchars($row['CalcFullName']); ?></td>
-                                        <td class="col-pais"><?php echo htmlspecialchars($row['GenusSection']); ?></td>
-                                        <td class="col-pais"><?php echo htmlspecialchars($row['CollectionYear']); ?></td>
-                                    </tr>
-                                <?php endwhile; ?>
-                            </tbody>
-                        </table>
-                    </div>
-                    
-                <div class="info-resultados">
-                    Mostrando resultados del <strong><?php echo ($total_registros > 0) ? $inicio_limite + 1 : 0; ?></strong> al 
-                    <strong><?php echo min($inicio_limite + $resultados_por_pagina, $total_registros); ?></strong> 
-                    de <strong><?php echo $total_registros; ?></strong>.
-                </div>                    
+        <div id="mapa"></div>
 
-                    
-
-                <?php else: ?>
-                    <div class="sin-resultados">
-                        <p>No hay datos que mostrar. Ajusta los filtros y pulsa "Filtrar".</p>
-                    </div>
-                <?php endif; ?>
+        <!-- El Panel Oculto con la Tabla -->
+        <div id="panel-tabla" class="panel-desplegable">
+            <div class="header-panel">
+                <button id="btn-cerrar-tabla">✕</button>
             </div>
+            <div class="contenido-tabla">
+                <div class="zona-derecha">
+                        <?php if ($resultado && $resultado->num_rows > 0): ?>
+                            <div class="contenedor-tabla">
+                                <table class="tabla-resultados">
+                                    <thead>
+                                        <tr>
+                                            <th class="col-id">Record Guid</th>
+                                            <th class="col-genero">Collectors</th>
+                                            <th class="col-especie">CountryName</th>
+                                            <th class="col-localidad">CalcFullName</th>
+                                            <th class="col-pais">GenusSection</th>
+                                            <th class="col-pais">CollectionYear</th>
+                                            
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php while($row = $resultado->fetch_assoc()): ?>
+                                            <tr>
+                                                <td class="col-id"><?php echo htmlspecialchars($row['Record Guid']); ?></td>
+                                                <td class="col-genero"><?php echo htmlspecialchars($row['Collectors']); ?></td>
+                                                <td class="col-especie"><?php echo htmlspecialchars($row['CountryName']); ?></td>
+                                                <td class="col-localidad"><?php echo htmlspecialchars($row['CalcFullName']); ?></td>
+                                                <td class="col-pais"><?php echo htmlspecialchars($row['GenusSection']); ?></td>
+                                                <td class="col-pais"><?php echo htmlspecialchars($row['CollectionYear']); ?></td>
+                                            </tr>
+                                        <?php endwhile; ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                        <div class="info-resultados">
+                            Mostrando resultados del <strong><?php echo ($total_registros > 0) ? $inicio_limite + 1 : 0; ?></strong> al 
+                            <strong><?php echo min($inicio_limite + $resultados_por_pagina, $total_registros); ?></strong> 
+                            de <strong><?php echo $total_registros; ?></strong>.
+                        </div>                    
 
-            <div class="paginacion-container">
-                <div class="paginacion">
-                    <?php
-                    $url_base = "?buscador=" . urlencode($termino) . "&pagina=";
-                    $rango = 5; // Tamaño del bloque de páginas a mostrar
+                            
 
-                    // Calcular en qué bloque estamos (1-5, 6-10, 11-15, etc.)
-                    $bloque_actual = ceil($pagina_actual / $rango);
-                    $inicio_bloque = (($bloque_actual - 1) * $rango) + 1;
-                    $fin_bloque = min($inicio_bloque + $rango - 1, $total_paginas);
+                        <?php else: ?>
+                            <div class="sin-resultados">
+                                <p>No hay datos que mostrar. Ajusta los filtros y pulsa "Filtrar".</p>
+                            </div>
+                        <?php endif; ?>
+                    
 
-                    // --- Botón Anterior (Solo si no estamos en la página 1) ---
-                    if ($pagina_actual > 1) {
-                        echo "<a href='{$url_base}" . ($pagina_actual - 1) . "'>Previous</a>";
-                    }
+                    <div class="paginacion-container">
+                        <div class="paginacion">
+                            <?php
+                            $url_base = "?buscador=" . urlencode($termino) . "&pagina=";
+                            $rango = 5; // Tamaño del bloque de páginas a mostrar
 
-                    // --- Botón "..." para ir al bloque anterior (Solo si no estamos en el primer bloque) ---
-                    if ($inicio_bloque > 1) {
-                        $salto_atras = $inicio_bloque - 1;
-                        echo "<a href='{$url_base}{$salto_atras}' class='dots'>...</a>";
-                    }
+                            // Calcular en qué bloque estamos (1-5, 6-10, 11-15, etc.)
+                            $bloque_actual = ceil($pagina_actual / $rango);
+                            $inicio_bloque = (($bloque_actual - 1) * $rango) + 1;
+                            $fin_bloque = min($inicio_bloque + $rango - 1, $total_paginas);
 
-                    // --- Números del bloque actual ---
-                    for ($i = $inicio_bloque; $i <= $fin_bloque; $i++) {
-                        $clase = ($i == $pagina_actual) ? "class='active'" : "";
-                        echo "<a href='{$url_base}{$i}' $clase>$i</a>";
-                    }
+                            // --- Botón Anterior (Solo si no estamos en la página 1) ---
+                            if ($pagina_actual > 1) {
+                                echo "<a href='{$url_base}" . ($pagina_actual - 1) . "'>Previous</a>";
+                            }
 
-                    // --- Botón "..." para ir al bloque siguiente (Solo si hay más páginas después del bloque actual) ---
-                    if ($fin_bloque < $total_paginas) {
-                        $salto_adelante = $fin_bloque + 1;
-                        echo "<a href='{$url_base}{$salto_adelante}' class='dots'>...</a>";
-                    }
+                            // --- Botón "..." para ir al bloque anterior (Solo si no estamos en el primer bloque) ---
+                            if ($inicio_bloque > 1) {
+                                $salto_atras = $inicio_bloque - 1;
+                                echo "<a href='{$url_base}{$salto_atras}' class='dots'>...</a>";
+                            }
 
-                    // --- Botón Siguiente (Solo si no estamos en la última página) ---
-                    if ($pagina_actual < $total_paginas) {
-                        echo "<a href='{$url_base}" . ($pagina_actual + 1) . "'>Next</a>";
-                    }
-                    ?>
+                            // --- Números del bloque actual ---
+                            for ($i = $inicio_bloque; $i <= $fin_bloque; $i++) {
+                                $clase = ($i == $pagina_actual) ? "class='active'" : "";
+                                echo "<a href='{$url_base}{$i}' $clase>$i</a>";
+                            }
+
+                            // --- Botón "..." para ir al bloque siguiente (Solo si hay más páginas después del bloque actual) ---
+                            if ($fin_bloque < $total_paginas) {
+                                $salto_adelante = $fin_bloque + 1;
+                                echo "<a href='{$url_base}{$salto_adelante}' class='dots'>...</a>";
+                            }
+
+                            // --- Botón Siguiente (Solo si no estamos en la última página) ---
+                            if ($pagina_actual < $total_paginas) {
+                                echo "<a href='{$url_base}" . ($pagina_actual + 1) . "'>Next</a>";
+                            }
+                            ?>
+                        </div>
+                    </div>
+
+                    <footer>
+                        <a href="https://www.csic.es/es">
+                            <img src="img/CSIC.png" alt="CSIC" class="logo2">
+                        </a>
+                        <p>Copyright © Ipomoea Project 2026</p>
+                        <a href="https://www.ucm.es/">
+                            <img src="img/complutense.png" alt="Complutense" class="logo2">
+                        </a>
+                    </footer>
                 </div>
             </div>
-
-            <footer>
-                <a href="https://www.csic.es/es">
-                    <img src="img/CSIC.png" alt="CSIC" class="logo2">
-                </a>
-                <p>Copyright © Flora de Guinea Ecuatorial 2026</p>
-                <a href="https://www.ucm.es/">
-                    <img src="img/complutense.png" alt="Complutense" class="logo2">
-                </a>
-            </footer>
         </div>
+
+        
     </div>
 
 
@@ -413,7 +492,7 @@
         }).setView([0, 0], 2);
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; Flora de Guinea Ecuatorial'
+            attribution: '&copy; Ipomoea Project'
         }).addTo(map);
 
         const bounds = L.latLngBounds();
