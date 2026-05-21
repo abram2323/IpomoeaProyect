@@ -180,7 +180,7 @@
         </button>
 
         <button type="button" id="btn-ver-tabla" class="btn-flotante-tabla">
-         Ver Lista de Registros
+            Ver Lista de Registros
         </button>
 
         <aside class="sidebar" id="sidebar-filtros">
